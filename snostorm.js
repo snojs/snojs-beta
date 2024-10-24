@@ -1,5 +1,7 @@
 // SnoJS Snowstorm BETA
 
+//TODO: mobile computer
+
 // inside exe usable functions
 function random(max) {
   return Math.floor(Math.random() * max);
@@ -171,10 +173,98 @@ const renderIfs = () =>{
     }
   }
 }
+const allowInclReturn = (elem,hasIncl) =>{
+  // This function only exists because when i return the other one it doesnt allow more than 1 incl
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4) {
+      if (this.status == 200) {elem.innerHTML = this.responseText;}
+    }
+  }      
+  xhttp.open("GET", hasIncl, true);
+  xhttp.send();
+  return;
+}
+const parseIncl = () =>{
+
+  let hasIncl;
+  for(i=0;i<elements.length;i++){
+    hasIncl = elements[i].getAttribute("incl");
+    elem = elements[i]
+
+    if(hasIncl != null){
+      allowInclReturn(elem,hasIncl);
+    }
+  }
+};parseIncl();
+
+
+const parseBind = () =>{
+  let hasBind;
+  let binds = []
+
+  for(i=0;i<elements.length;i++){
+    hasBind = elements[i].getAttribute("bind")
+    if(hasBind!=null){
+      for(q=0;q<Object.keys(data).length;q++){
+        if(hasBind.includes(Object.keys(data)[q])){
+          binds.push({elem:elements[i],attr:hasBind})
+        }
+      }
+    }
+  }
+  return binds;
+};
+const bound = parseBind();
+const renderBinds = () =>{
+  let fix;
+  for(i=0;i<bound.length;i++){
+    fix = bound[i].attr;
+    data[fix] = bound[i].elem.value;
+    
+  }
+};renderBinds();
+
+const parseFors = () =>{
+  let hasFor;
+  let fors = [];
+
+  for(i=0;i<elements.length;i++){
+    hasFor = elements[i].getAttribute("for");
+    if(hasFor != null){
+      // Pushed each element that has the for="" attribute attached then sends it off too renderFors
+      fors.push({elem:elements[i],attr:hasFor})
+    }
+  }
+  return fors;
+};
+const fors = parseFors();
+
+const renderFors = () =>{
+  let rendered = []
+  for(i=0;i<fors.length;i++){
+    // clears every container from any previous children
+    fors[i].elem.innerHTML = ''
+    // create an item for each item in the array based on whats in the for attr
+    let newItem;
+    let itemClass = fors[i].elem.getAttribute("item-class");
+    let itemType = fors[i].elem.getAttribute("item");
+    // arr just shows the actually array name;
+    let arr = fors[i].attr; // always use data[arr] not just arr
+    for(q=0;q<data[arr].length;q++){
+      newItem = document.createElement(itemType);
+      newItem.classList = itemClass;
+      newItem.innerHTML = data[arr][q];
+      fors[i].elem.appendChild(newItem)
+    }
+  }
+};
 
 window.main = function(){
 requestAnimationFrame( main );
  
   renderReval();
   renderIfs();
+  renderBinds();
+  renderFors();
 };main();
