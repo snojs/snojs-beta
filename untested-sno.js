@@ -243,35 +243,20 @@ const fors = parseFors();
 const renderFors = () =>{
   let rendered = []
   for(i=0;i<fors.length;i++){
+    // clears every container from any previous children
+    fors[i].elem.innerHTML = ''
     // create an item for each item in the array based on whats in the for attr
     let newItem;
     let itemClass = fors[i].elem.getAttribute("item-class");
     let itemType = fors[i].elem.getAttribute("item");
-    // arr just shows the actually array;
+    // arr just shows the actually array name;
     let arr = fors[i].attr; // always use data[arr] not just arr
-    for(q=0;q<arr.length;q++){
+    for(q=0;q<data[arr].length;q++){
       newItem = document.createElement(itemType);
       newItem.classList = itemClass;
       newItem.innerHTML = data[arr][q];
       fors[i].elem.appendChild(newItem)
-      // now that we have first rendered it, it needs to be live updated
-      rendered.push({elem:newItem,arr:arr,q:q,parent:fors[i]})
     }
-  }
-  return rendered;
-};
-let rendered = renderFors();
-const reRenderFors = () =>{
-  for(i=0;i<rendered.length;i++){
-    // constantly update each specific for loop item
-    if(rendered.length < data[rendered[i].arr].length){
-      while(rendered.parent.firstChild){
-        rendered.parent.firstChild.remove();
-      }
-      rendered = renderFors();
-    }
-    rendered[i].elem.innerHTML = data[rendered[i].arr][rendered[i].q];
-    
   }
 };
 
@@ -281,4 +266,5 @@ requestAnimationFrame( main );
   renderReval();
   renderIfs();
   renderBinds();
+  renderFors();
 };main();
