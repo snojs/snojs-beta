@@ -173,6 +173,18 @@ const renderIfs = () =>{
     }
   }
 }
+const allowInclReturn = (elem,hasIncl) =>{
+  // This function only exists because when i return the other one it doesnt allow more than 1 incl
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4) {
+      if (this.status == 200) {elem.innerHTML = this.responseText;}
+    }
+  }      
+  xhttp.open("GET", hasIncl, true);
+  xhttp.send();
+  return;
+}
 const parseIncl = () =>{
 
   let hasIncl;
@@ -181,19 +193,11 @@ const parseIncl = () =>{
     elem = elements[i]
 
     if(hasIncl != null){
-      
-      xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-        if (this.readyState == 4) {
-          if (this.status == 200) {elem.innerHTML = this.responseText;}
-        }
-      }      
-      xhttp.open("GET", hasIncl, true);
-      xhttp.send();
-      return;
+      allowInclReturn(elem,hasIncl);
     }
   }
 };parseIncl();
+
 
 const parseBind = () =>{
   let hasBind;
@@ -277,5 +281,4 @@ requestAnimationFrame( main );
   renderReval();
   renderIfs();
   renderBinds();
-  reRenderFors();
 };main();
