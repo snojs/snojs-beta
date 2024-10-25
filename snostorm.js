@@ -1,7 +1,4 @@
 // SnoJS Snowstorm BETA
-
-//TODO: mobile computer
-
 // inside exe usable functions
 function random(max) {
   return Math.floor(Math.random() * max);
@@ -48,6 +45,40 @@ for(i=0;i<elements.length;i++){
   }
 };
 const data = parseData();
+
+const parseScreen = () =>{
+  var hasEither;
+  var screens = [];
+  for(i=0;i<elements.length;i++){
+    hasEither = elements[i].getAttribute("computer");
+    // computer first mobile second
+    if(hasEither != null){
+      screens.push({elem:elements[i],attr:"computer"})
+    }else if(elements[i].getAttribute("mobile") != null){
+      screens.push({elem:elements[i],attr:"mobile"})
+    }
+  }
+  return screens;
+};
+const screens = parseScreen();
+const renderScreens = () =>{
+  for(i=0;i<screens.length;i++){
+    if(screens[i].attr == "mobile"){
+      if(window.innerWidth <= 600){
+        screens[i].elem.style.display="block";
+      }else{
+        screens[i].elem.style.display="none";
+      }
+    }    
+    if(screens[i].attr == "computer"){
+      if(window.innerWidth >= 600){
+        screens[i].elem.style.display="block";
+      }else{
+        screens[i].elem.style.display="none";
+      }
+    }
+  }
+}
 
 const parseReval = () => {
   var hasReval;
@@ -267,4 +298,5 @@ requestAnimationFrame( main );
   renderIfs();
   renderBinds();
   renderFors();
+  renderScreens();
 };main();
