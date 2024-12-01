@@ -1,29 +1,33 @@
-# # Snostorm
+# # Snoflake
 
-> v2 beta version of sno
+v3 Building the web [your way.](https://github.com/snojs)
 
-`ex glande quercus` : `out of the acorn grows the oak`
-
-### Snojs just got **buffed**.
+### Snojs; _truly reactive_...
 
 ```html
-<body data='{"array":["Crazy","Simple","Perfect","Dense","Speedy","Tiny","Portable","Reactive","Lightweight"]}'>
-  <!-- Save a random num to temporary storage -->
-  <p exc="save(random(array.length))"></p>
-  <button click='save(random(array.length))'>What is sno?</button>
-  <!-- read temporary storage -->
-  <p react>{{array[retrieve()]}}</p>
-  <script src="./sno-storm.js"></script>
+<body data='{"count":0]}'>
+  <p react>{{count}}</p>
+  <button onclick='$("count++;")'>+</button>
+  <script src="./sno.js"></script>
 </body>
 ```
 
-## ## With **CRAZY** new features
+### *Change*log
 
-|Attribute|Function|
-|---|---|
-|react|Show Reactive Data|
-|exc|Update Data onload|
-|save()|Save a value to temporary storage|
-|retrieve()|Retrieve this value|
-|toggle()|Flip flop booleans|
-|random()|Returns a random number with (max)|
+Click functions are __much__ more functional.<br/>
+```html
+<!-- Original way: it fails on low power devices -->
+<button click="count++;">+</button>
+<!-- New way: it functions on older devices-->
+<button onclick='$("count++;")'>+</button>
+```
+
+__REAL REACTIVITY__.
+```html
+<!-- In old sno it updates every millisecond-->
+<p react>{{count}}</p>
+<!-- In NEW sno it only updates on value change-->
+```
+
+This reactivity also applies to any other function such as `bind`, `for`, `if` etc.<br/>
+Outdated functions removed: `save()`, `retrieve()` 
