@@ -149,7 +149,7 @@ const renderScreens = () =>{
       }
     }    
     if(screens[i].attr == "computer"){
-      if(window.innerWidth >= 600){
+      if(window.innerWidth > 600){
         screens[i].elem.style.display="block";
       }else{
         screens[i].elem.style.display="none";
